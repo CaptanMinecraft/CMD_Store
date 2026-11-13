@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CMD TICKET</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Vazirmatn,sans-serif;
+}
+
+body{
+min-height:100vh;
+background:url('https://file-dl.splus.ir/api/v2/files/download/AgECgUMBAwVMVbM4ATkBAgIBpJnGEyS6') center/cover no-repeat fixed;
+overflow-x:hidden;
+}
+
+/* TOP BAR */
+.top{
+position:fixed;
+top:10px;
+right:10px;
+left:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:1000;
+color:#fff;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+text-shadow:0 0 12px #fff;
+}
+
+.menu{
+font-size:30px;
+cursor:pointer;
+}
+
+/* LANGUAGE DRAWER TOP */
+.drawer{
+position:fixed;
+top:-120%;
+left:0;
+width:100%;
+background:rgba(0,0,0,.92);
+backdrop-filter:blur(20px);
+padding:20px;
+transition:.5s ease;
+z-index:999;
+border-bottom-left-radius:25px;
+border-bottom-right-radius:25px;
+color:#fff;
+}
+
+.drawer.open{
+top:0;
+}
+
+.lang{
+padding:12px;
+margin:8px 0;
+border-radius:12px;
+background:rgba(255,255,255,.08);
+cursor:pointer;
+transition:.3s;
+}
+
+.lang:hover{
+transform:translateX(8px);
+background:rgba(0,255,255,.2);
+}
+
+/* LOADER */
+#loader{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:inherit;
+z-index:9999;
+animation:flyIn .6s ease;
+}
+
+.spin{
+width:170px;
+height:170px;
+border-radius:50%;
+border:6px solid rgba(255,255,255,.2);
+border-top:6px solid #fff;
+animation:spin 1s linear infinite;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.spin img{
+width:120px;
+height:120px;
+border-radius:50%;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* APP */
+#app{
+display:none;
+min-height:100vh;
+justify-content:center;
+align-items:center;
+padding:20px;
+animation:flyIn .6s ease;
+}
+
+.card{
+width:min(520px,95vw);
+padding:25px;
+border-radius:25px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(18px);
+color:#fff;
+animation:flyIn .6s ease;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+/* INPUT */
+.row{
+display:flex;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:12px;
+border:none;
+border-radius:12px;
+outline:none;
+}
+
+button{
+padding:12px 16px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.06);
+}
+
+/* BOTTOM */
+.bottom{
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+}
+
+/* TOAST */
+.toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%) translateY(-120px);
+background:linear-gradient(45deg,#00f,#0ff,#0f0);
+color:#fff;
+padding:14px 22px;
+border-radius:30px;
+transition:.4s;
+opacity:0;
+}
+
+.toast.show{
+transform:translateX(-50%) translateY(0);
+opacity:1;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+}
+
+.panel{
+background:#fff;
+padding:20px;
+border-radius:16px;
+width:min(500px,95vw);
+color:#000;
+}
+
+.msg{
+background:#eee;
+padding:8px;
+margin:6px 0;
+border-radius:10px;
+animation:flyIn .3s ease;
+}
+
+/* ANIMATION */
+@keyframes flyIn{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+<div class="spin">
+<img src="https://file-dl.splus.ir/api/v2/files/download/AgECgUMBAwV0BrQ4ATkBAgIBgho5Be-S">
+</div>
+</div>
+
+<div class="top">
+<div class="menu" onclick="toggle()">☰</div>
+<div class="logo">CMD TICKET</div>
+</div>
+
+<!-- LANGUAGE -->
+<div class="drawer" id="drawer">
+<h3>🌍 Select Language</h3>
+
+<div class="lang" onclick="setLang('fa')">🇮🇷 فارسی</div>
+<div class="lang" onclick="setLang('en')">🇺🇸 English</div>
+<div class="lang" onclick="setLang('ar')">🇸🇦 العربية</div>
+<div class="lang" onclick="setLang('tr')">🇹🇷 Türkçe</div>
+<div class="lang" onclick="setLang('ru')">🇷🇺 Русский</div>
+<div class="lang" onclick="setLang('de')">🇩🇪 Deutsch</div>
+<div class="lang" onclick="setLang('fr')">🇫🇷 Français</div>
+<div class="lang" onclick="setLang('es')">🇪🇸 Español</div>
+<div class="lang" onclick="setLang('it')">🇮🇹 Italiano</div>
+<div class="lang" onclick="setLang('zh')">🇨🇳 中文</div>
+<div class="lang" onclick="setLang('ja')">🇯🇵 日本語</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="app">
+<div class="card">
+<h1 id="title">YOUR TICKET</h1>
+
+<div class="row">
+<input id="txt" placeholder="Write message">
+<button onclick="send()" id="sendBtn">Send</button>
+</div>
+</div>
+</div>
+
+<button class="bottom" onclick="openAdmin()" id="msgBtn">Messages</button>
+
+<!-- ADMIN -->
+<div class="modal" id="login">
+<div class="panel">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="check()">Login</button>
+</div>
+</div>
+
+<div class="modal" id="admin">
+<div class="panel">
+<div id="msgs"></div>
+<button onclick="clearAll()">Delete All</button>
+</div>
+</div>
+
+<script>
+
+setTimeout(()=>{
+loader.style.display='none';
+app.style.display='flex';
+},2000);
+
+/* LANG */
+const t={
+fa:{title:"تیکت شما",send:"ارسال",msg:"پیام ها",ph:"پیام بنویس"},
+en:{title:"YOUR TICKET",send:"Send",msg:"Messages",ph:"Write message"},
+ar:{title:"تذكرتك",send:"إرسال",msg:"الرسائل",ph:"اكتب رسالة"},
+tr:{title:"BİLETİNİZ",send:"Gönder",msg:"Mesajlar",ph:"Mesaj yaz"},
+ru:{title:"ВАШ БИЛЕТ",send:"Отправить",msg:"Сообщения",ph:"Сообщение"},
+de:{title:"DEIN TICKET",send:"Senden",msg:"Nachrichten",ph:"Nachricht"},
+fr:{title:"VOTRE TICKET",send:"Envoyer",msg:"Messages",ph:"Message"},
+es:{title:"TU TICKET",send:"Enviar",msg:"Mensajes",ph:"Mensaje"},
+it:{title:"IL TUO BIGLIETTO",send:"Invia",msg:"Messaggi",ph:"Messaggio"},
+zh:{title:"你的票",send:"发送",msg:"消息",ph:"输入消息"},
+ja:{title:"あなたのチケット",send:"送信",msg:"メッセージ",ph:"メッセージを書く"}
+};
+
+function toggle(){
+drawer.classList.toggle('open');
+}
+
+function setLang(l){
+title.innerText=t[l].title;
+sendBtn.innerText=t[l].send;
+msgBtn.innerText=t[l].msg;
+txt.placeholder=t[l].ph;
+drawer.classList.remove('open');
+toast("✓ Language Changed");
+}
+
+/* TOAST */
+function toast(m){
+toastBox.innerText=m;
+toastBox.classList.add('show');
+setTimeout(()=>toastBox.classList.remove('show'),2000);
+}
+
+const toastBox=document.getElementById("toast");
+
+/* SEND */
+function send(){
+let v=txt.value.trim();
+if(!v)return;
+let a=JSON.parse(localStorage.m||"[]");
+a.push(v);
+localStorage.m=JSON.stringify(a);
+txt.value="";
+toast("Message Sent ✓");
+}
+
+/* ADMIN */
+function openAdmin(){login.style.display="flex"}
+
+function check(){
+if(pass.value==="CMD123"){
+login.style.display="none";
+admin.style.display="flex";
+load();
+}else alert("Wrong");
+}
+
+function load(){
+let a=JSON.parse(localStorage.m||"[]");
+msgs.innerHTML=a.map(x=>`<div class='msg'>${x}</div>`).join("");
+}
+
+function clearAll(){
+localStorage.m="[]";
+load();
+toast("Deleted");
+}
+
+</script>
+
+</body>
+</html>
